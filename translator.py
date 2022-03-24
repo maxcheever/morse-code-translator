@@ -14,17 +14,21 @@ class Tree:
 
    def __init__(self):
       self.root = Node('start')
+      self.tree = self.morseTree
    
    @property
    def morseTree(self):
+
       #level1
       self.e = self.root.left = Node("E")
       self.t = self.root.right = Node("T")
+
       #level2
       self.i = self.e.left = Node("I")
       self.a = self.e.right = Node("A")
       self.n = self.t.left = Node("N")
       self.m = self.t.right = Node("M")
+
       #level3
       self.s = self.i.left = Node("S")
       self.u = self.i.right = Node("U")
@@ -35,6 +39,7 @@ class Tree:
       self.k = self.n.right = Node("K")
       self.g = self.m.left = Node("G")
       self.o = self.m.right = Node("O")
+
       # level4
       self.h = self.s.left = Node("H")
       self.v = self.s.right = Node("V")
@@ -50,6 +55,32 @@ class Tree:
       self.z = self.g.left = Node("Z")
       self.q = self.g.right = Node("Q")
 
+def translatorHelper(node, char, code):
+   if not node:
+      return False
+   elif node.value == char:
+      return True
+   else:
+      if translatorHelper(node.left, char, code):
+         code.insert(0, '.')
+         return True
+      elif translatorHelper(node.right, char, code):
+         code.insert(0, '-')
+         return True
 
+def translator():
+   morseCode = ''
+   morseTree = Tree()
+   for c in input('Enter A Message:\n'):
+      translated = []
+      if not c.isalpha():
+         return 'Could Not Translate. Contains Unknown Characters'
+      elif c.isalpha():
+         translatorHelper(morseTree.root, c.upper(), translated)
+         code = "".join(translated)
+         morseCode = morseCode + code + " "
+
+   return morseCode
       
+print(translator())
 
